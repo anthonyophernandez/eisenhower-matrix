@@ -8,15 +8,41 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: (to, from, next) => {
+      const currentUser = JSON.parse(window.localStorage.currentUser)
+      if (currentUser.username) {
+        next(`/${currentUser.username}`)
+      } else {
+        next('/login')
+      }
+    }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'UserLogin',
+    component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue'),
+    beforeEnter: (to, from, next) => {
+      const currentUser = JSON.parse(window.localStorage.currentUser)
+      if (currentUser.username) {
+        next(`/${currentUser.username}`)
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: '/:username',
+    name: 'UserView',
+    component: () => import(/* webpackChunkName: "UserView" */ '../views/UserView.vue'),
+    beforeEnter: (to, from, next) => {
+      const currentUser = JSON.parse(window.localStorage.currentUser)
+      if (currentUser.username) {
+        next()
+      } else {
+        next('/')
+      }
+    }
   }
 ]
 
