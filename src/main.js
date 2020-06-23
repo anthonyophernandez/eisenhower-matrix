@@ -5,6 +5,10 @@ import store from './store'
 
 import './assets/css/tailwind.css'
 
+import setupMirage from './mirage/server-setup'
+
+setupMirage()
+
 Vue.config.productionTip = false
 
 new Vue({
