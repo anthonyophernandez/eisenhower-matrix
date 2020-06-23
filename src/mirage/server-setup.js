@@ -4,7 +4,7 @@ import usersJSON from './users.json'
 export default function () {
   const server = new Server()
 
-  server.namespace('api')
+  server.namespace = 'api'
 
   server.get('/users', ({ db }, request) => db.users)
 
