@@ -12,13 +12,10 @@ export default function () {
         include: ['matrix']
       }),
       matrix: JSONAPISerializer.extend({
-        include: ['user', 'lists']
+        include: ['lists']
       }),
       list: JSONAPISerializer.extend({
-        include: ['matrix', 'tasks']
-      }),
-      task: JSONAPISerializer.extend({
-        include: ['list']
+        include: ['tasks']
       })
     },
     models: {
@@ -58,4 +55,5 @@ export default function () {
   })
 
   server.get('/matrices/:id')
+  server.get('/lists/:id')
 }
