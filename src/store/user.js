@@ -23,9 +23,11 @@ export default {
     async login ({ commit }, loginInfo) {
       try {
         const response = await Api().post('/api/sessions', loginInfo)
-        const user = response.data
-        commit('SET_CURRENT_USER', user)
-        return user
+        const user = response.data.data
+        user.attributes.id = user.id
+        user.attributes.matrixId = user.relationships.matrix.data.id
+        commit('SET_CURRENT_USER', user.attributes)
+        return user.attributes
       } catch {
         return { error: 'Username/Password combination was incorrect. Please try again.' }
       }
