@@ -3,8 +3,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  name: 'UserView'
+  name: 'UserView',
+  computed: {
+    ...mapState({
+      currentUser: state => state.user.currentUser,
+      currentMatrix: state => state.matrix.currentMatrix
+    })
+  },
+  created () {
+    this.$store.dispatch('matrix/load', this.currentUser.matrixId)
+  }
 }
 </script>
 
