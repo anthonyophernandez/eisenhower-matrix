@@ -13,15 +13,21 @@ export default function () {
       }),
       matrix: JSONAPISerializer.extend({
         include: ['user', 'lists']
+      }),
+      list: JSONAPISerializer.extend({
+        include: ['matrix', 'tasks']
+      }),
+      task: JSONAPISerializer.extend({
+        include: ['list']
       })
     },
     models: {
       user: Model.extend({
-        matrix: belongsTo('matrix')
+        matrix: belongsTo()
       }),
       matrix: Model.extend({
-        user: belongsTo('user'),
-        lists: hasMany('list')
+        user: belongsTo(),
+        lists: hasMany()
       }),
       list: Model.extend({
         matrix: belongsTo(),
