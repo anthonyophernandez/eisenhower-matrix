@@ -2,16 +2,16 @@
   <div class="w-full max-w-6xl m-auto">
     <div class="flex flex-wrap">
         <button @click="loadList('Q1')" class="w-1/2 bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Q1
+          Do
         </button>
         <button @click="loadList('Q2')" class="w-1/2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Q2
+          Schedule
         </button>
         <button @click="loadList('Q3')" class="w-1/2 bg-orange-300 hover:bg-orange-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Q3
+          Delegate
         </button>
         <button @click="loadList('Q4')" class="w-1/2 bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Q4
+          Eliminate
         </button>
     </div>
     <div class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4" :class="[colorBorder(currentList.type)]">
@@ -19,29 +19,27 @@
         <h1 :class="[task['is-done'] ? 'line-through' : '']">{{ task.description }}</h1>
         <div>
           <button v-if="!task['is-done']" @click="changeDoneStatus(task.id, true)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Done</button>
-          <button v-else @click="changeDoneStatus(task.id, false)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Undone</button>
-          <button @click="toggleModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-1">Edit</button>
-          <button @click="deleteTask(task.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-1">Delete</button>
+          <button v-else @click="changeDoneStatus(task.id, false)" class="bg-green-500 hover:bg-green-700 text-white font-bold  rounded py-2 px-4">Undone</button>
+          <button @click="toggleModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 ml-1">Edit</button>
+          <button @click="deleteTask(task.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold rounded py-2 px-4 ml-1">Delete</button>
         </div>
       </div>
     </div>
-    <div v-if="toggleModal" class="absolute z-50 inset-0 bg-white w-2/6 h-64 m-auto">
-      <form class="p-2">
-        <div @click="toggleModal = false" class="text-right cursor-pointer">&#215;</div>
-        <label>Description</label>
-        <textarea class="w-full bg-gray-900 text-white resize-none p-1"></textarea>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
-      </form>
-    </div>
-    <div v-if="toggleModal" class="absolute z-40 inset-0 opacity-25 bg-gray-900"></div>
+
+    <ModalForm :isModalOpen="toggleModal" @closeModal="closeModal"/>
+
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import ModalForm from '../components/ModalForm.vue'
 
 export default {
   name: 'UserView',
+  components: {
+    ModalForm
+  },
   data () {
     return {
       toggleModal: false
@@ -79,6 +77,9 @@ export default {
     deleteTask (taskId) {
       const task = this.currentList.tasks.find(t => t.id === taskId)
       this.$store.dispatch('matrix/deleteTask', task)
+    },
+    closeModal () {
+      this.toggleModal = false
     }
   }
 }
