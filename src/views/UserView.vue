@@ -14,8 +14,10 @@
           Q4
         </button>
     </div>
-    <div v-for="task in currentList.tasks" :key="task.id">
-      <h1>{{ task.description }}</h1>
+    <div class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4" :class="[colorBorder(currentList.type)]">
+      <div v-for="task in currentList.tasks" :key="task.id" class="my-2 py-2">
+        <h1>{{ task.description }}</h1>
+      </div>
     </div>
     <div>
 
@@ -40,7 +42,17 @@ export default {
   },
   methods: {
     loadList (type) {
-      this.$store.dispatch('matrix/loadList', this.currentMatrix.lists.find(l => l.type === type).id)
+      if (this.currentMatrix.lists.length > 0) {
+        this.$store.dispatch('matrix/loadList', this.currentMatrix.lists.find(l => l.type === type).id)
+      }
+    },
+    colorBorder (type) {
+      const color = (type === 'Q1') ? 'border-green-300'
+        : (type === 'Q2') ? 'border-blue-300'
+          : (type === 'Q3') ? 'border-orange-300'
+            : (type === 'Q4') ? 'border-red-300'
+              : 'border-gray-300'
+      return color
     }
   }
 }

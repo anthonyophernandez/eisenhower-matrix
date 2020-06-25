@@ -19,11 +19,15 @@ export default {
       const response = await Api().get(`/api/matrices/${matrixId}`)
       const matrix = response.data.data
       matrix.attributes.id = matrix.id
-      matrix.attributes.lists = response.data.included.filter(obj => obj.type === 'lists')
-      matrix.attributes.lists.forEach(l => {
-        l.attributes.id = l.id
-      })
-      matrix.attributes.lists = matrix.attributes.lists.map(l => l.attributes)
+      if (response.data.included) {
+        matrix.attributes.lists = response.data.included.filter(obj => obj.type === 'lists')
+        matrix.attributes.lists.forEach(l => {
+          l.attributes.id = l.id
+        })
+        matrix.attributes.lists = matrix.attributes.lists.map(l => l.attributes)
+      } else {
+        matrix.attributes.lists = []
+      }
       commit('SET_CURRENT_MATRIX', matrix.attributes)
     },
     async loadList ({ commit }, listId) {
