@@ -67,4 +67,5 @@ export default function () {
   server.get('/matrices/:id')
   server.get('/lists/:id')
   server.put('/tasks/:id')
+  server.delete('/tasks/:id')
 }

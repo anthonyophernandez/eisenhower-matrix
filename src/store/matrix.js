@@ -19,6 +19,10 @@ export default {
           t = task
         }
       })
+    },
+    DELETE_TASK (state, taskId) {
+      const tasks = state.currentList.tasks.filter(t => t.id !== taskId)
+      state.currentList.tasks = tasks
     }
   },
   actions: {
@@ -42,17 +46,27 @@ export default {
       const response = await Api().get(`/api/lists/${listId}`)
       const list = response.data.data
       list.attributes.id = list.id
-      list.attributes.tasks = response.data.included.filter(obj => obj.type === 'tasks')
-      list.attributes.tasks.forEach(t => {
-        t.attributes.id = t.id
-      })
-      list.attributes.tasks = list.attributes.tasks.map(t => t.attributes)
+      if (response.data.included) {
+        list.attributes.tasks = response.data.included.filter(obj => obj.type === 'tasks')
+        list.attributes.tasks.forEach(t => {
+          t.attributes.id = t.id
+        })
+        list.attributes.tasks = list.attributes.tasks.map(t => t.attributes)
+      } else {
+        list.attributes.tasks = []
+      }
       commit('SET_CURRENT_LIST', list.attributes)
     },
     async taskChangeDoneStatus ({ commit }, task) {
       const response = await Api().put(`/api/tasks/${task.id}`, task)
       const newTask = response.data.data
       commit('EDIT_TASK', newTask)
+    },
+    async deleteTask ({ commit }, task) {
+      const response = await Api().delete(`/api/tasks/${task.id}`)
+      if (response.status === 200 || response.status === 204) {
+        commit('DELETE_TASK', task.id)
+      }
     }
   }
 }
