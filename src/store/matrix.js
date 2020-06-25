@@ -12,10 +12,17 @@ export default {
     },
     SET_CURRENT_LIST (state, list) {
       state.currentList = list
+    },
+    EDIT_TASK (state, task) {
+      state.currentList.tasks.forEach(t => {
+        if (t.id === task.id) {
+          t = task
+        }
+      })
     }
   },
   actions: {
-    async load ({ commit }, matrixId) {
+    async load ({ commit, dispatch }, matrixId) {
       const response = await Api().get(`/api/matrices/${matrixId}`)
       const matrix = response.data.data
       matrix.attributes.id = matrix.id
@@ -25,6 +32,7 @@ export default {
           l.attributes.id = l.id
         })
         matrix.attributes.lists = matrix.attributes.lists.map(l => l.attributes)
+        dispatch('loadList', matrix.attributes.lists[0].id)
       } else {
         matrix.attributes.lists = []
       }
@@ -40,6 +48,11 @@ export default {
       })
       list.attributes.tasks = list.attributes.tasks.map(t => t.attributes)
       commit('SET_CURRENT_LIST', list.attributes)
+    },
+    async taskChangeDoneStatus ({ commit }, task) {
+      const response = await Api().put(`/api/tasks/${task.id}`, task)
+      const newTask = response.data.data
+      commit('EDIT_TASK', newTask)
     }
   }
 }

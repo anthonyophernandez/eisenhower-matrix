@@ -2,41 +2,49 @@
   {
     "id": "1",
     "description": "Task 1 in Q1",
-    "listId": "1"
+    "listId": "1",
+    "isDone": true
   },
   {
     "id": "2",
     "description": "Task 2 in Q1",
-    "listId": "1"
+    "listId": "1",
+    "isDone": false
   },
   {
     "id": "3",
     "description": "Task 3 in Q2",
-    "listId": "2"
+    "listId": "2",
+    "isDone": false
   },
   {
     "id": "4",
     "description": "Task 4 in Q2",
-    "listId": "2"
+    "listId": "2",
+    "isDone": false
   },
   {
     "id": "5",
     "description": "Task 5 in Q3",
-    "listId": "3"
+    "listId": "3",
+    "isDone": false
   },
   {
     "id": "6",
     "description": "Task 6 in Q3",
-    "listId": "3"
+    "listId": "3",
+    "isDone": false
   },
   {
     "id": "7",
     "description": "Task 7 in Q4",
-    "listId": "4"
+    "listId": "4",
+    "isDone": true
   },
   {
     "id": "8",
     "description": "Task 8 in Q4",
-    "listId": "4"
+    "listId": "4",
+    "isDone": false
   }
 ]

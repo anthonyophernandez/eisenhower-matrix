@@ -15,8 +15,10 @@
         </button>
     </div>
     <div class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4" :class="[colorBorder(currentList.type)]">
-      <div v-for="task in currentList.tasks" :key="task.id" class="my-2 py-2">
-        <h1>{{ task.description }}</h1>
+      <div v-for="task in currentList.tasks" :key="task.id" class="flex justify-between my-2 py-2">
+        <h1 :class="[task['is-done'] ? 'line-through' : '']">{{ task.description }}</h1>
+        <button v-if="!task['is-done']" @click="taskDone(task.id)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Done</button>
+        <button v-else @click="taskUndone(task.id)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Undone</button>
       </div>
     </div>
     <div>
@@ -51,8 +53,18 @@ export default {
         : (type === 'Q2') ? 'border-blue-300'
           : (type === 'Q3') ? 'border-orange-300'
             : (type === 'Q4') ? 'border-red-300'
-              : 'border-gray-300'
+              : 'border-gray-600'
       return color
+    },
+    taskDone (taskId) {
+      const task = this.currentList.tasks.find(t => t.id === taskId)
+      task['is-done'] = true
+      this.$store.dispatch('matrix/taskChangeDoneStatus', task)
+    },
+    taskUndone (taskId) {
+      const task = this.currentList.tasks.find(t => t.id === taskId)
+      task['is-done'] = false
+      this.$store.dispatch('matrix/taskChangeDoneStatus', task)
     }
   }
 }

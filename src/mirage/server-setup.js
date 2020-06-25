@@ -16,6 +16,16 @@ export default function () {
       }),
       list: JSONAPISerializer.extend({
         include: ['tasks']
+      }),
+      task: JSONAPISerializer.extend({
+        normalize (json) {
+          return {
+            data: {
+              type: 'task',
+              attributes: json
+            }
+          }
+        }
       })
     },
     models: {
@@ -56,4 +66,5 @@ export default function () {
 
   server.get('/matrices/:id')
   server.get('/lists/:id')
+  server.put('/tasks/:id')
 }
