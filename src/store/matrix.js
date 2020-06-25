@@ -57,6 +57,9 @@ export default {
       }
       commit('SET_CURRENT_LIST', list.attributes)
     },
+    clearCurrentList ({ commit }) {
+      commit('SET_CURRENT_LIST', [])
+    },
     async taskChangeDoneStatus ({ commit }, task) {
       const response = await Api().put(`/api/tasks/${task.id}`, task)
       const newTask = response.data.data

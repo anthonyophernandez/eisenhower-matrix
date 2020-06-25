@@ -37,6 +37,7 @@ export default {
   methods: {
     logoutUser () {
       this.$store.dispatch('user/logout')
+      this.$store.dispatch('matrix/clearCurrentList')
       this.$router.push('/')
     },
     login () {

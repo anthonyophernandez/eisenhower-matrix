@@ -18,15 +18,22 @@
       <div v-for="task in currentList.tasks" :key="task.id" class="flex justify-between my-2 py-2">
         <h1 :class="[task['is-done'] ? 'line-through' : '']">{{ task.description }}</h1>
         <div>
-          <button v-if="!task['is-done']" @click="changeDoneStatus(task.id, true)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Done</button>
-          <button v-else @click="changeDoneStatus(task.id, false)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Undone</button>
+          <button v-if="!task['is-done']" @click="changeDoneStatus(task.id, true)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Done</button>
+          <button v-else @click="changeDoneStatus(task.id, false)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Undone</button>
+          <button @click="toggleModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-1">Edit</button>
           <button @click="deleteTask(task.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-1">Delete</button>
         </div>
       </div>
     </div>
-    <div>
-
+    <div v-if="toggleModal" class="absolute z-50 inset-0 bg-white w-2/6 h-64 m-auto">
+      <form class="p-2">
+        <div @click="toggleModal = false" class="text-right cursor-pointer">&#215;</div>
+        <label>Description</label>
+        <textarea class="w-full bg-gray-900 text-white resize-none p-1"></textarea>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+      </form>
     </div>
+    <div v-if="toggleModal" class="absolute z-40 inset-0 opacity-25 bg-gray-900"></div>
   </div>
 </template>
 
@@ -35,6 +42,11 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'UserView',
+  data () {
+    return {
+      toggleModal: false
+    }
+  },
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser,
