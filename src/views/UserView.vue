@@ -15,9 +15,9 @@
         </button>
     </div>
     <div class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4" :class="[colorBorder(currentList.type)]">
-      <div v-for="task in currentList.tasks" :key="task.id" class="flex justify-between my-2 py-2">
-        <h1 :class="[task['is-done'] ? 'line-through' : '']">{{ task.description }}</h1>
-        <div>
+      <div v-for="task in currentList.tasks" :key="task.id" class="flex my-2 py-2">
+        <p class="w-8/12 truncate" :class="[task['is-done'] ? 'line-through' : '']">{{ task.description }}</p>
+        <div class="flex justify-end w-4/12">
           <button v-if="!task['is-done']" @click="changeDoneStatus(task.id, true)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Done</button>
           <button v-else @click="changeDoneStatus(task.id, false)" class="bg-green-500 hover:bg-green-700 text-white font-bold  rounded py-2 px-4">Undone</button>
           <button @click="setToEdit(task)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 ml-1">Edit</button>

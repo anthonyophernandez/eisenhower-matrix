@@ -6,7 +6,7 @@
         <h4 class="text-xl text-center text-gray-500 font-bold uppercase tracking-wider">{{ tittleMessage }}</h4>
         <div>
           <label class="text-sm text-gray-700 font-bold" for="description">Description</label>
-          <textarea v-model="task.description" class="w-full rounded bg-gray-900 text-white resize-none p-1" id="description" name="description"></textarea>
+          <textarea v-model="task.description" class="w-full h-24 rounded bg-gray-900 text-white resize-none p-1" id="description" name="description"></textarea>
         </div>
         <div class="w-full">
           <button @click="closeModal" class="w-1/2 bg-red-500 hover:bg-red-700 text-white font-bold rounded py-2 px-4 rounded-r-none">Cancel</button>
@@ -15,7 +15,7 @@
       </form>
     </div>
     <!-- Background -->
-    <div class="absolute z-40 inset-0 opacity-25 bg-gray-900"></div>
+    <div class="fixed z-40 inset-0 opacity-25 bg-gray-900"></div>
   </div>
 </template>
 
