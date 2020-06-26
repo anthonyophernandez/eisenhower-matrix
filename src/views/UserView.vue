@@ -20,13 +20,18 @@
         <div>
           <button v-if="!task['is-done']" @click="changeDoneStatus(task.id, true)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Done</button>
           <button v-else @click="changeDoneStatus(task.id, false)" class="bg-green-500 hover:bg-green-700 text-white font-bold  rounded py-2 px-4">Undone</button>
-          <button @click="toggleModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 ml-1">Edit</button>
+          <button @click="setToEdit(task)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 ml-1">Edit</button>
           <button @click="deleteTask(task.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold rounded py-2 px-4 ml-1">Delete</button>
         </div>
       </div>
+
+      <div class="w-full flex justify-end">
+        <button @click="setToCreate" class="bg-blue-500 hover:bg-blue-700 text-white font-bold rounded py-2 px-4 mt-1">Add Task</button>
+      </div>
+
     </div>
 
-    <ModalForm :isModalOpen="toggleModal" @closeModal="closeModal"/>
+    <ModalForm :handleSubmit="handleSubmit" :tittleMessage="tittleMessage" :buttonMessage="buttonMessage" :task="taskToEdit" :isModalOpen="toggleModal" @closeModal="closeModal"/>
 
   </div>
 </template>
@@ -42,7 +47,11 @@ export default {
   },
   data () {
     return {
-      toggleModal: false
+      toggleModal: false,
+      taskToEdit: {},
+      buttonMessage: '',
+      tittleMessage: '',
+      handleSubmit: null
     }
   },
   computed: {
@@ -72,7 +81,32 @@ export default {
     changeDoneStatus (taskId, doneStatus) {
       const task = this.currentList.tasks.find(t => t.id === taskId)
       task['is-done'] = doneStatus
-      this.$store.dispatch('matrix/taskChangeDoneStatus', task)
+      this.$store.dispatch('matrix/editTask', task)
+    },
+    setToEdit (task) {
+      this.taskToEdit = task
+      this.toggleModal = true
+      this.buttonMessage = 'Update'
+      this.tittleMessage = 'Edit Task #' + task.id
+      this.handleSubmit = this.editTask
+    },
+    editTask () {
+      this.$store.dispatch('matrix/editTask', this.taskToEdit)
+      this.closeModal()
+    },
+    setToCreate () {
+      this.taskToEdit = {
+        listId: this.currentList.id,
+        isDone: false
+      }
+      this.toggleModal = true
+      this.buttonMessage = 'Add'
+      this.tittleMessage = 'Add New Task'
+      this.handleSubmit = this.createTask
+    },
+    createTask () {
+      this.$store.dispatch('matrix/createTask', this.taskToEdit)
+      this.closeModal()
     },
     deleteTask (taskId) {
       const task = this.currentList.tasks.find(t => t.id === taskId)
@@ -80,6 +114,13 @@ export default {
     },
     closeModal () {
       this.toggleModal = false
+      this.resetData()
+    },
+    resetData () {
+      this.buttonMessage = ''
+      this.tittleMessage = ''
+      this.handleSubmit = null
+      this.taskToEdit = {}
     }
   }
 }

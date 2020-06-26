@@ -16,9 +16,14 @@ export default {
     EDIT_TASK (state, task) {
       state.currentList.tasks.forEach(t => {
         if (t.id === task.id) {
-          t = task
+          t.description = task.description
+          t['is-done'] = task['is-done']
         }
       })
+    },
+    ADD_TASK (state, task) {
+      const tasks = state.currentList.tasks.concat(task)
+      state.currentList.tasks = tasks
     },
     DELETE_TASK (state, taskId) {
       const tasks = state.currentList.tasks.filter(t => t.id !== taskId)
@@ -50,6 +55,7 @@ export default {
         list.attributes.tasks = response.data.included.filter(obj => obj.type === 'tasks')
         list.attributes.tasks.forEach(t => {
           t.attributes.id = t.id
+          t.attributes.listId = list.id
         })
         list.attributes.tasks = list.attributes.tasks.map(t => t.attributes)
       } else {
@@ -60,16 +66,22 @@ export default {
     clearCurrentList ({ commit }) {
       commit('SET_CURRENT_LIST', [])
     },
-    async taskChangeDoneStatus ({ commit }, task) {
-      const response = await Api().put(`/api/tasks/${task.id}`, task)
-      const newTask = response.data.data
-      commit('EDIT_TASK', newTask)
-    },
     async deleteTask ({ commit }, task) {
       const response = await Api().delete(`/api/tasks/${task.id}`)
       if (response.status === 200 || response.status === 204) {
         commit('DELETE_TASK', task.id)
       }
+    },
+    async editTask ({ commit }, task) {
+      const response = await Api().put(`/api/tasks/${task.id}`, task)
+      const newTask = response.data.data.attributes
+      commit('EDIT_TASK', newTask)
+    },
+    async createTask ({ commit }, task) {
+      const response = await Api().post('/api/tasks', task)
+      const savedTask = response.data.data
+      savedTask.attributes.id = savedTask.id
+      commit('ADD_TASK', savedTask.attributes)
     }
   }
 }

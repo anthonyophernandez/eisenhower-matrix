@@ -68,4 +68,9 @@ export default function () {
   server.get('/lists/:id')
   server.put('/tasks/:id')
   server.delete('/tasks/:id')
+  server.post('/tasks', (schema, request) => {
+    const json = JSON.parse(request.requestBody)
+    const response = schema.tasks.create(json)
+    return response
+  })
 }
