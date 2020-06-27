@@ -3,12 +3,21 @@ import Api from '../services/api'
 export default {
   namespaced: true,
   state: {
-    currentUser: {}
+    currentUser: {
+      username: '',
+      name: '',
+      id: '',
+      matrixId: ''
+    }
   },
   mutations: {
     SET_CURRENT_USER (state, user) {
-      state.currentUser = user
-      window.localStorage.currentUser = JSON.stringify(user)
+      state.currentUser.username = user.username
+      state.currentUser.name = user.name
+      state.currentUser.id = user.id
+      state.currentUser.matrixId = user.matrixId
+
+      window.localStorage.currentUser = JSON.stringify(state.currentUser)
     },
     LOGOUT_USER (state) {
       state.currentUser = {}
@@ -30,6 +39,18 @@ export default {
         return user.attributes
       } catch {
         return { error: 'Username/Password combination was incorrect. Please try again.' }
+      }
+    },
+    async register ({ commit }, registrationInfo) {
+      try {
+        const response = await Api().post('/api/users', registrationInfo)
+        const user = response.data.data
+        user.attributes.id = user.id
+        user.attributes.matrixId = user.relationships.matrix.data.id
+        commit('SET_CURRENT_USER', user.attributes)
+        return user.attributes
+      } catch {
+        return { error: 'There was an error. Please try again.' }
       }
     },
     logout ({ commit }) {

@@ -19,7 +19,7 @@ import Matrix from './Matrix.vue'
 import Stats from './Stats.vue'
 
 export default {
-  name: 'User',
+  name: 'UserView',
   components: {
     Matrix,
     Stats

@@ -68,9 +68,25 @@ export default function () {
   server.get('/lists/:id')
   server.put('/tasks/:id')
   server.delete('/tasks/:id')
-  server.post('/tasks', (schema, request) => {
+  server.post('/tasks', function (schema, request) {
     const json = JSON.parse(request.requestBody)
     const response = schema.tasks.create(json)
-    return response
+    return this.serialize(response)
+  })
+  server.post('/users', function (schema, request) {
+    const json = JSON.parse(request.requestBody)
+    const response = schema.users.create(json)
+
+    const matrix = schema.matrices.create({ userId: response.id })
+    response.attrs.matrixId = matrix.id
+
+    const q1 = schema.lists.create({ matrixId: matrix.id, type: 'Q1' })
+    const q2 = schema.lists.create({ matrixId: matrix.id, type: 'Q2' })
+    const q3 = schema.lists.create({ matrixId: matrix.id, type: 'Q3' })
+    const q4 = schema.lists.create({ matrixId: matrix.id, type: 'Q4' })
+
+    matrix.attrs.listIds = [q1.attrs.id, q2.attrs.id, q3.attrs.id, q4.attrs.id]
+
+    return this.serialize(response)
   })
 }

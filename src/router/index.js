@@ -32,6 +32,19 @@ const routes = [
     }
   },
   {
+    path: '/register',
+    name: 'UserRegister',
+    component: () => import(/* webpackChunkName: "UserRegister" */ '../views/UserRegister.vue'),
+    beforeEnter: (to, from, next) => {
+      const currentUser = JSON.parse(window.localStorage.currentUser)
+      if (currentUser.username) {
+        next(`/${currentUser.username}`)
+      } else {
+        next()
+      }
+    }
+  },
+  {
     path: '/:username',
     name: 'UserView',
     component: () => import(/* webpackChunkName: "UserView" */ '../views/UserView.vue'),

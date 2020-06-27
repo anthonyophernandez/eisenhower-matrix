@@ -2,11 +2,13 @@
   {
     "id": "1",
     "username": "anthonyophernandez",
+    "name": "Anthony I",
     "matrixId": "1"
   },
   {
     "id": "2",
     "username": "anthonyophernandez2",
+    "name": "Anthony II",
     "matrixId": "2"
   }
 ]
