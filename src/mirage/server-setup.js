@@ -57,7 +57,7 @@ export default function () {
   server.post('/sessions', function (schema, request) {
     const json = JSON.parse(request.requestBody)
     const response = schema.users.findBy({ username: json.username })
-    if (response && json.password === 'master') {
+    if ((response.attrs.username === json.username) && (response.attrs.password === json.password)) {
       return this.serialize(response)
     } else {
       return new Response(401)
@@ -77,13 +77,13 @@ export default function () {
     const json = JSON.parse(request.requestBody)
     const response = schema.users.create(json)
 
-    const matrix = schema.matrices.create({ userId: response.id })
-    response.attrs.matrixId = matrix.id
+    const matrix = schema.matrices.create({ userId: response.attrs.id })
+    response.attrs.matrixId = matrix.attrs.id
 
-    const q1 = schema.lists.create({ matrixId: matrix.id, type: 'Q1' })
-    const q2 = schema.lists.create({ matrixId: matrix.id, type: 'Q2' })
-    const q3 = schema.lists.create({ matrixId: matrix.id, type: 'Q3' })
-    const q4 = schema.lists.create({ matrixId: matrix.id, type: 'Q4' })
+    const q1 = schema.lists.create({ matrixId: matrix.attrs.id, type: 'Q1' })
+    const q2 = schema.lists.create({ matrixId: matrix.attrs.id, type: 'Q2' })
+    const q3 = schema.lists.create({ matrixId: matrix.attrs.id, type: 'Q3' })
+    const q4 = schema.lists.create({ matrixId: matrix.attrs.id, type: 'Q4' })
 
     matrix.attrs.listIds = [q1.attrs.id, q2.attrs.id, q3.attrs.id, q4.attrs.id]
 

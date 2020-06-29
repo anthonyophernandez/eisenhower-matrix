@@ -13,6 +13,7 @@ export default {
   mutations: {
     SET_CURRENT_USER (state, user) {
       state.currentUser.username = user.username
+      state.currentUser.password = user.password
       state.currentUser.name = user.name
       state.currentUser.id = user.id
       state.currentUser.matrixId = user.matrixId
