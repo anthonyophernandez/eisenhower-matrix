@@ -17,6 +17,7 @@ const routes = [
       if (currentUser.username && !user.error) {
         next(`/${currentUser.username}`)
       } else {
+        store.dispatch('user/logout')
         next('/login')
       }
     }
@@ -31,6 +32,7 @@ const routes = [
       if (currentUser.username && !user.error) {
         next(`/${currentUser.username}`)
       } else {
+        store.dispatch('user/logout')
         next()
       }
     }
@@ -45,6 +47,7 @@ const routes = [
       if (currentUser.username && !user.error) {
         next(`/${currentUser.username}`)
       } else {
+        store.dispatch('user/logout')
         next()
       }
     }
@@ -59,6 +62,7 @@ const routes = [
       if (currentUser.username && !user.error) {
         next()
       } else {
+        store.dispatch('user/logout')
         next('/')
       }
     }
