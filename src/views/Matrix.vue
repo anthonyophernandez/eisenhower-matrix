@@ -1,5 +1,6 @@
 <template>
   <div class="w-full max-w-6xl m-auto">
+
     <div class="flex flex-wrap">
         <button @click="loadList('Q1')" class="w-1/2 bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded-l">
           Do
@@ -14,6 +15,7 @@
           Eliminate
         </button>
     </div>
+
     <div class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4" :class="[colorBorder(currentList.type)]">
       <div v-for="task in currentList.tasks" :key="task.id" class="flex my-2 py-2">
         <p class="break-words w-8/12" :class="[task['is-done'] ? 'line-through' : '']">{{ task.description }}</p>
@@ -66,9 +68,7 @@ export default {
   },
   methods: {
     loadList (type) {
-      if (this.currentMatrix.lists.length > 0) {
-        this.$store.dispatch('matrix/loadList', this.currentMatrix.lists.find(l => l.type === type).id)
-      }
+      this.$store.dispatch('matrix/loadList', this.currentMatrix.lists.find(l => l.type === type).id)
     },
     colorBorder (type) {
       const color = (type === 'Q1') ? 'border-green-300'
