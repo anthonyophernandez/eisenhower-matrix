@@ -1,20 +1,7 @@
 <template>
   <div class="w-full max-w-6xl m-auto">
 
-    <div class="flex flex-wrap">
-        <button @click="loadList('Q1')" class="w-1/2 bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Do
-        </button>
-        <button @click="loadList('Q2')" class="w-1/2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Schedule
-        </button>
-        <button @click="loadList('Q3')" class="w-1/2 bg-orange-300 hover:bg-orange-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Delegate
-        </button>
-        <button @click="loadList('Q4')" class="w-1/2 bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Eliminate
-        </button>
-    </div>
+    <ListButtons />
 
     <div class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4" :class="[colorBorder(currentList.type)]">
       <div v-for="task in currentList.tasks" :key="task.id" class="flex my-2 py-2">
@@ -41,11 +28,13 @@
 <script>
 import { mapState } from 'vuex'
 import ModalForm from '../components/ModalForm.vue'
+import ListButtons from '../components/ListButtons.vue'
 
 export default {
   name: 'MatrixView',
   components: {
-    ModalForm
+    ModalForm,
+    ListButtons
   },
   data () {
     return {
@@ -67,9 +56,6 @@ export default {
     this.$store.dispatch('matrix/load', this.currentUser.matrixId)
   },
   methods: {
-    loadList (type) {
-      this.$store.dispatch('matrix/loadList', this.currentMatrix.lists.find(l => l.type === type).id)
-    },
     colorBorder (type) {
       const color = (type === 'Q1') ? 'border-green-300'
         : (type === 'Q2') ? 'border-blue-300'

@@ -4,23 +4,10 @@
         {{ currentUser }}
     </h2>
 
-    <div class="flex flex-wrap mt-2">
-        <button @click="loadList('Q1')" class="w-1/2 bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Do
-        </button>
-        <button @click="loadList('Q2')" class="w-1/2 bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Schedule
-        </button>
-        <button @click="loadList('Q3')" class="w-1/2 bg-orange-300 hover:bg-orange-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-          Delegate
-        </button>
-        <button @click="loadList('Q4')" class="w-1/2 bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-          Eliminate
-        </button>
-    </div>
+    <ListButtons @load="setChartData" />
 
     <div v-if="loaded" class="bg-white divide-y divide-gray-400 rounded border-l-8 mt-4 p-4">
-      <BarChart :chartData="chartData" :options="options" />
+      <BarChart :chart-data="chartData" :options="options" />
     </div>
   </div>
 </template>
@@ -28,34 +15,18 @@
 <script>
 import { mapState } from 'vuex'
 import BarChart from '../components/BarChart.vue'
+import ListButtons from '../components/ListButtons.vue'
 
 export default {
   name: 'Stats',
   components: {
-    BarChart
+    BarChart,
+    ListButtons
   },
   data () {
     return {
       loaded: false,
-      chartData: {
-        labels: [],
-        datasets: [
-          {
-            label: 'Done',
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.7)'
-            ],
-            data: null
-          },
-          {
-            label: 'Not Done',
-            backgroundColor: [
-              'rgba(54, 162, 235, 0.7)'
-            ],
-            data: null
-          }
-        ]
-      },
+      chartData: null,
       options: {
         responsive: true,
         maintainAspectRatio: false,
@@ -73,26 +44,39 @@ export default {
   computed: {
     ...mapState({
       currentUser: state => state.user.currentUser.name,
-      currentMatrix: state => state.matrix.currentMatrix,
       currentList: state => state.matrix.currentList
     })
   },
   methods: {
-    async loadList (type) {
-      this.loaded = false
-      await this.$store.dispatch('matrix/loadList', this.currentMatrix.lists.find(l => l.type === type).id)
-      this.setChartData()
-      this.loaded = true
-    },
     setChartData () {
-      const labels = ['Tasks']
-      this.chartData.labels = labels
+      this.loaded = false
 
       const numOfDoneTasks = this.currentList.tasks.filter(t => t['is-done'] === true).length
       const numOfNotDoneTasks = this.currentList.tasks.length - numOfDoneTasks
 
-      this.chartData.datasets[0].data = [numOfDoneTasks]
-      this.chartData.datasets[1].data = [numOfNotDoneTasks]
+      const chartData = {
+        labels: ['Tasks'],
+        datasets: [
+          {
+            label: 'Done',
+            backgroundColor: [
+              'rgba(162, 222, 150, 0.7)'
+            ],
+            data: [numOfDoneTasks]
+          },
+          {
+            label: 'Not Done',
+            backgroundColor: [
+              'rgba(250, 22, 22, 0.7)'
+            ],
+            data: [numOfNotDoneTasks]
+          }
+        ]
+      }
+
+      this.chartData = chartData
+
+      this.loaded = true
     }
   }
 }
