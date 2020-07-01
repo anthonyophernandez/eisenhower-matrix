@@ -14,14 +14,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import BarChart from '../components/BarChart.vue'
-import ListButtons from '../components/ListButtons.vue'
 
 export default {
   name: 'Stats',
   components: {
-    BarChart,
-    ListButtons
+    BarChart: () => import(/* webpackChunkName: 'BarChart' */ '../components/BarChart.vue'),
+    ListButtons: () => import(/* webpackChunkName: 'ListButtons' */ '../components/ListButtons.vue')
   },
   data () {
     return {

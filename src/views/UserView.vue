@@ -15,14 +15,11 @@
 </template>
 
 <script>
-import Matrix from './Matrix.vue'
-import Stats from './Stats.vue'
-
 export default {
   name: 'UserView',
   components: {
-    Matrix,
-    Stats
+    Matrix: () => import(/* webpackChunkName: 'Matrix' */ '../components/Matrix.vue'),
+    Stats: () => import(/* webpackChunkName: 'Stats' */ '../components/Stats.vue')
   },
   data () {
     return {

@@ -27,14 +27,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import ModalForm from '../components/ModalForm.vue'
-import ListButtons from '../components/ListButtons.vue'
 
 export default {
   name: 'MatrixView',
   components: {
-    ModalForm,
-    ListButtons
+    ModalForm: () => import(/* webpackChunkName: 'ModalForm' */ '../components/ModalForm.vue'),
+    ListButtons: () => import(/* webpackChunkName: 'ListButtons' */ '../components/ListButtons.vue')
   },
   data () {
     return {

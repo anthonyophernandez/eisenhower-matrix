@@ -6,11 +6,10 @@
 </template>
 
 <script>
-import UserAuthForm from '../components/UserAuthForm.vue'
 export default {
   name: 'UserRegister',
   components: {
-    UserAuthForm
+    UserAuthForm: () => import(/* webpackChunkName: 'UserAuthForm' */ '../components/UserAuthForm.vue')
   },
   data () {
     return {
