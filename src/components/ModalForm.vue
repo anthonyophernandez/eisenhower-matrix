@@ -1,7 +1,7 @@
 <template>
   <div v-if="isModalOpen">
     <!-- Form -->
-    <div class="bg-white rounded absolute z-50 inset-0 w-2/6 h-64 m-auto">
+    <div class="bg-white rounded absolute z-50 inset-0 w-5/6 sm:w-4/6 md:w-3/6 lg:w-2/6  h-64 m-auto">
       <form @submit.prevent="handleSubmit" class="flex flex-col justify-between h-full p-4">
         <h4 class="text-xl text-center text-gray-500 font-bold uppercase tracking-wider">{{ tittleMessage }}</h4>
         <div>
