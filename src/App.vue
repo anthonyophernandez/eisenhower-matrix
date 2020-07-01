@@ -34,7 +34,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'App',
   created () {
-    window.localStorage.currentUser = JSON.stringify({})
+    // window.localStorage.currentUser = JSON.stringify({})
     this.$store.dispatch('user/loadCurrent')
   },
   computed: {
