@@ -34,6 +34,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'App',
   created () {
+    window.localStorage.currentUser = JSON.stringify({})
     this.$store.dispatch('user/loadCurrent')
   },
   computed: {
@@ -58,6 +59,11 @@ export default {
 </script>
 
 <style lang="scss">
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

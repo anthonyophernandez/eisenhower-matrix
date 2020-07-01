@@ -13,11 +13,15 @@ const routes = [
     component: Home,
     beforeEnter: async (to, from, next) => {
       const currentUser = JSON.parse(window.localStorage.currentUser)
-      const user = await store.dispatch('user/login', currentUser)
-      if (currentUser.username && !user.error) {
-        next(`/${currentUser.username}`)
+      if (currentUser.name) {
+        const user = await store.dispatch('user/login', currentUser)
+        if (currentUser.username && !user.error) {
+          next(`/${currentUser.username}`)
+        } else {
+          store.dispatch('user/logout')
+          next('/login')
+        }
       } else {
-        store.dispatch('user/logout')
         next('/login')
       }
     }
@@ -28,11 +32,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue'),
     beforeEnter: async (to, from, next) => {
       const currentUser = JSON.parse(window.localStorage.currentUser)
-      const user = await store.dispatch('user/login', currentUser)
-      if (currentUser.username && !user.error) {
-        next(`/${currentUser.username}`)
+      if (currentUser.name) {
+        const user = await store.dispatch('user/login', currentUser)
+        if (!user.error) {
+          next(`/${currentUser.username}`)
+        } else {
+          store.dispatch('user/logout')
+          next()
+        }
       } else {
-        store.dispatch('user/logout')
         next()
       }
     }
@@ -43,11 +51,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "UserRegister" */ '../views/UserRegister.vue'),
     beforeEnter: async (to, from, next) => {
       const currentUser = JSON.parse(window.localStorage.currentUser)
-      const user = await store.dispatch('user/login', currentUser)
-      if (currentUser.username && !user.error) {
-        next(`/${currentUser.username}`)
+      if (currentUser.name) {
+        const user = await store.dispatch('user/login', currentUser)
+        if (!user.error) {
+          next(`/${currentUser.username}`)
+        } else {
+          store.dispatch('user/logout')
+          next()
+        }
       } else {
-        store.dispatch('user/logout')
         next()
       }
     }
@@ -58,11 +70,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "UserView" */ '../views/UserView.vue'),
     beforeEnter: async (to, from, next) => {
       const currentUser = JSON.parse(window.localStorage.currentUser)
-      const user = await store.dispatch('user/login', currentUser)
-      if (currentUser.username && !user.error) {
-        next()
+      if (currentUser.name) {
+        const user = await store.dispatch('user/login', currentUser)
+        if (!user.error) {
+          next()
+        } else {
+          store.dispatch('user/logout')
+          next('/')
+        }
       } else {
-        store.dispatch('user/logout')
         next('/')
       }
     }
