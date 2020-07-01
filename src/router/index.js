@@ -12,8 +12,9 @@ const routes = [
     name: 'Home',
     component: Home,
     beforeEnter: async (to, from, next) => {
-      const currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
-      if (currentUser) {
+      let currentUser = window.localStorage.getItem('currentUser')
+      if (currentUser !== null && currentUser !== '{}') {
+        currentUser = JSON.parse(currentUser)
         const user = await store.dispatch('user/login', currentUser)
         if (!user.error) {
           next(`/${currentUser.username}`)
@@ -31,8 +32,9 @@ const routes = [
     name: 'UserLogin',
     component: () => import(/* webpackChunkName: "UserLogin" */ '../views/UserLogin.vue'),
     beforeEnter: async (to, from, next) => {
-      const currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
-      if (currentUser) {
+      let currentUser = window.localStorage.getItem('currentUser')
+      if (currentUser !== null && currentUser !== '{}') {
+        currentUser = JSON.parse(currentUser)
         const user = await store.dispatch('user/login', currentUser)
         if (!user.error) {
           next(`/${currentUser.username}`)
@@ -50,8 +52,9 @@ const routes = [
     name: 'UserRegister',
     component: () => import(/* webpackChunkName: "UserRegister" */ '../views/UserRegister.vue'),
     beforeEnter: async (to, from, next) => {
-      const currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
-      if (currentUser) {
+      let currentUser = window.localStorage.getItem('currentUser')
+      if (currentUser !== null && currentUser !== '{}') {
+        currentUser = JSON.parse(currentUser)
         const user = await store.dispatch('user/login', currentUser)
         if (!user.error) {
           next(`/${currentUser.username}`)
@@ -69,8 +72,9 @@ const routes = [
     name: 'UserView',
     component: () => import(/* webpackChunkName: "UserView" */ '../views/UserView.vue'),
     beforeEnter: async (to, from, next) => {
-      const currentUser = JSON.parse(window.localStorage.getItem('currentUser'))
-      if (currentUser) {
+      let currentUser = window.localStorage.getItem('currentUser')
+      if (currentUser !== null && currentUser !== '{}') {
+        currentUser = JSON.parse(currentUser)
         const user = await store.dispatch('user/login', currentUser)
         if (!user.error) {
           next()

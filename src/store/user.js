@@ -27,7 +27,8 @@ export default {
   },
   actions: {
     async loadCurrent ({ commit }) {
-      const currentUser = JSON.parse(window.localStorage.currentUser) || {}
+      let currentUser = window.localStorage.getItem('currentUser')
+      currentUser = (currentUser !== null) ? JSON.parse(currentUser) : {}
       commit('SET_CURRENT_USER', currentUser)
     },
     async login ({ commit }, loginInfo) {
